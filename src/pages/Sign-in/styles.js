@@ -5,7 +5,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 10px;
   height: 100vh;
 `;
 
@@ -21,14 +20,10 @@ export const Content = styled.div`
   max-width: 350px;
   padding: 20px;
   border-radius: 5px;
+  margin-top: 10px;
 
-  div{
-    width: 35vh
-  }
-
-  button{
-    width: 35vh;
-    padding: 10px 16px;
+  .MuiTextField-root{
+    width: 100%;
   }
 `;
 
