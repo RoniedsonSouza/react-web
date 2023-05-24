@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import useAuth from "../../hooks/useAuth";
@@ -18,8 +18,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -30,6 +28,7 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 
 const drawerWidth = 240;
 
@@ -132,7 +131,7 @@ const SideMenu = ({ switchTheme, Item }) => {
   const location = useLocation();
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -143,9 +142,8 @@ const SideMenu = ({ switchTheme, Item }) => {
   };
 
   const [sideMenuOptions, setSideMenuOptions] = useState([
+    "Home",
     "Perfil",
-    "Eventos",
-    "Batalhas",
     "Notificações",
     "Mensagens",
     "Configurações",
@@ -153,6 +151,8 @@ const SideMenu = ({ switchTheme, Item }) => {
 
   const setIconMenu = (text) => {
     switch (text) {
+      case "Home":
+        return <GridViewOutlinedIcon />;
       case "Perfil":
         return <PersonIcon />;
       case "Eventos":
@@ -167,6 +167,40 @@ const SideMenu = ({ switchTheme, Item }) => {
         return <SettingsOutlinedIcon />;
     }
   };
+
+  const removeSpecialCaracters = (text) => {
+    return text.normalize("NFD").replace(/([\u0300-\u036f]|[^0-9a-zA-Z])/g, "");
+  };
+
+  const titlePage = () => {
+    var text = location.pathname;
+    var caminhos = text.split('/');
+    var titulo = "";
+    
+    caminhos.forEach((el, i)=> {
+      if(i > 0){
+        var condition = i === (caminhos.length-1) ? "" : " > ";
+        var namePage = el.charAt(0).toUpperCase() + el.slice(1);
+        if(namePage.includes("-")){
+          namePage = namePage.replace("-", " ")
+          console.log();
+        }
+        titulo += namePage + condition;
+      }
+    })
+    return titulo;
+  };
+
+  // var text = location.pathname;
+  //   var caminhos = text.split('/');
+    
+  //   return (
+  //     caminhos.forEach((el, i)=> {
+  //       var condition = i === caminhos.length ? "" : " > ";
+  //       if(i > 0)
+  //         return el.charAt(0).toUpperCase() + el.slice(1) + condition;
+  //     })
+  //   );
 
   return (
     <Box sx={{ display: "flex", mt: "4em" }}>
@@ -188,13 +222,12 @@ const SideMenu = ({ switchTheme, Item }) => {
             noWrap
             component="div"
           >
-            {location.pathname.replace("/", "").charAt(0).toUpperCase() +
-              location.pathname.slice(2)}
+            {titlePage()}
           </Typography>
           <FormGroup edge="right">
             <FormControlLabel
               onChange={switchTheme}
-              control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+              control={<MaterialUISwitch sx={{ m: 1 }}/>}
             />
           </FormGroup>
           <ExitToAppOutlinedIcon
@@ -204,6 +237,7 @@ const SideMenu = ({ switchTheme, Item }) => {
         </Toolbar>
       </AppBar>
       <Drawer
+        id="sideMenuDrawer"
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -228,8 +262,10 @@ const SideMenu = ({ switchTheme, Item }) => {
         <Divider />
         <List>
           {sideMenuOptions.map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => navigate("/" + text)}>
+            <ListItem key={index} disablePadding>
+              <ListItemButton
+                onClick={() => navigate("/" + removeSpecialCaracters(text))}
+              >
                 <ListItemIcon>{setIconMenu(text)}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -238,19 +274,19 @@ const SideMenu = ({ switchTheme, Item }) => {
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
+          {["Batalhas", "Eventos"].map((text, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton
+                onClick={() => navigate("/" + removeSpecialCaracters(text))}
+              >
+                <ListItemIcon>{setIconMenu(text)}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <Main open={open}>{<Item/>}</Main>
+      <Main open={open}>{<Item />}</Main>
     </Box>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import * as C from "./styles"
 import { Link, useNavigate } from "react-router-dom"
 import useAuth from '../../hooks/useAuth'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { TextField } from '@mui/material'
 import Button from '../../components/Button'
@@ -30,27 +30,27 @@ const SignIn = () => {
     }
 
     const res = await signin(login, senha);
-
-    if (res) {
-      toast.error(res)
+  
+    if (!res.token) {
+      toast.error(res.response.message)
       setLoading(false);
       return;
     }
 
     setLoading(false);
     navigate("/home");
-  }
+  };
 
   const handleBattle = () => {
 
-  }
+  };
 
   return (
     <C.Container>
       <Box sx={{ width: '100%', top: '-1px', position: 'absolute' }}>
           {loading ? <LinearProgress color="inherit" /> : null}
       </Box>
-      <C.Label>Rhyme Bet</C.Label>
+      <C.Label>R.A.P</C.Label>
       <C.Content>
         <TextField
           label="Login"
@@ -112,19 +112,6 @@ const SignIn = () => {
           </C.Strong>
         </C.LabelSignup>
       </C.Content>
-
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      ></ToastContainer>
     </C.Container>
   )
 }

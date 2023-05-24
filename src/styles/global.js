@@ -14,6 +14,10 @@ const GlobalStyle = createGlobalStyle`
       background-color: #fff;
     color: rgba(0, 0, 0, 0.87);
     }
+
+    .MuiDataGrid-cell[data-field="imageEvent"]{
+      padding-left: 0;
+    }
   }
   
   [data-theme="dark"] {
@@ -30,29 +34,57 @@ const GlobalStyle = createGlobalStyle`
       color: #fff;
     }
 
+    Button .MuiSvgIcon-root{
+      color: rgb(5 42 54);
+    }
+
     .MuiDivider-root{
       border-color: rgb(255 255 255 / 12%);
     }
 
-    .MuiListItem-root:hover{
+    #sideMenuDrawer .MuiListItem-root:hover{
       background-color: rgb(34, 151, 120);
     }
 
     .MuiAppBar-root{
       background-color: #052a36;
     }
+
+    .MuiDataGrid-columnHeaderTitle, .MuiDataGrid-cellContent, .MuiTablePagination-displayedRows{
+      color: #fff;
+    }
+
+    .MuiButtonBase-root svg{
+      color: #fff;
+    }
+
+    .MuiButtonBase-root[disabled] svg{
+      color: rgb(137 137 137);
+    }
+
+    .MuiDataGrid-cell[data-field="imageEvent"]{
+      padding-left: 0;
+    }
   }
   
     * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-        background-color: var(--background-color) !important;
-        font-family: Arial, Helvetica, sans-serif;
+      background-color: var(--background-color) !important;
+      font-family: Arial, Helvetica, sans-serif;
     }
+
+    .MuiFormHelperText-root{
+      -webkit-user-modify: read-write-plaintext-only;
+
+    .MuiDataGrid-cell[data-field="imageEvent"]{
+      padding-left: 0;
+    }
+  }
 `;
 
 export default GlobalStyle;
